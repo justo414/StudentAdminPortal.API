@@ -1,7 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using StudentAdminPortal.API.DataModels;
+
 var builder = WebApplication.CreateBuilder(args);
+
+ConfigurationManager configuration = builder.Configuration;
+
+IWebHostEnvironment environment = builder.Environment;
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddControllers();
+
+builder.Services.AddDbContext<StudentAdminContext>(options =>
+options.UseSqlServer(configuration.GetConnectionString("StudentAdminPortalDb")));
 
 var app = builder.Build();
 
