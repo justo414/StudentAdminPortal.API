@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace StudentAdminPortal.API.DataModels
 {
-    public class Address
+    public class StudentAdminContext : DbContext
     {
-        public Guid Id { get; set; }
-        public string PhysicalAddress { get; set; }
-        public string PostalAddress { get; set; }
+        public StudentAdminContext(DbContextOptions<StudentAdminContext> options) : base(options)
+        {
+        }
 
-        // Navigation Property
-        public Guid StudentId { get; set; }
+        public DbSet<Student> Student { get; set; }
+        public DbSet<Gender> Gender { get; set; }
+        public DbSet<Address> Address { get; set; }
     }
 }
