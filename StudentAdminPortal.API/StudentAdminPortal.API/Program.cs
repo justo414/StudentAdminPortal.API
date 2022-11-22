@@ -12,6 +12,16 @@ IWebHostEnvironment environment = builder.Environment;
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+builder.Services.AddCors((options) =>
+{
+    options.AddPolicy("angularApplication", (builder) =>
+    {
+        builder.WithOrigins("http://localhost:4200")
+        .AllowAnyHeader()
+        .WithMethods("GET", "POST", "PUT", "DELETE")
+        .WithExposedHeaders("*");
+    });
+});
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<StudentAdminContext>(options =>
@@ -45,12 +55,12 @@ if (app.Environment.IsDevelopment())
 }
 
 
-
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseCors("angularApplication");
 
 app.UseAuthorization();
 
