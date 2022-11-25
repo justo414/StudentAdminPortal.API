@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using StudentAdminPortal.API.DataModels;
 using StudentAdminPortal.API.Repositories;
@@ -28,6 +29,7 @@ builder.Services.AddDbContext<StudentAdminContext>(options =>
 options.UseSqlServer(configuration.GetConnectionString("StudentAdminPortalDb")));
 
 builder.Services.AddScoped<IStudentRepository, SqlStudentRepository>();
+builder.Services.AddScoped<IImageRepository, LocalStorageImageRepository>();
 
 builder.Services.AddSwaggerGen();
 
@@ -56,7 +58,11 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Resources")),
+    RequestPath = "/Resources"
+});
 
 app.UseRouting();
 
